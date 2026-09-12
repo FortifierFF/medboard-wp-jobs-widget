@@ -132,6 +132,7 @@ Ship updates by releasing a new plugin zip (or git pull on the server). Hospital
 
 ## Related repos
 
+- This plugin (temporary host): [`FortifierFF/medboard-wp-jobs-widget`](https://github.com/FortifierFF/medboard-wp-jobs-widget)
 - [`medboard-web`](https://github.com/t-mladenov-meadboard/medboard-web) — frontend + `/embed/jobs` + `/widget/jobs.js`
 - [`medboard-be`](https://github.com/t-mladenov-meadboard/medboard-be) — widget token API and domain checks
 
