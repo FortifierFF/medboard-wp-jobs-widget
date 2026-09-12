@@ -1,0 +1,5 @@
+# Ignore build artifacts only — vendor the update-checker library in git
+# so hospitals do not need Composer.
+build/
+*.zip
+.DS_Store

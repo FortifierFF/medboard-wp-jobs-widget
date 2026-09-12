@@ -1,6 +1,6 @@
-# Build a WordPress-ready zip and publish it as the repo's "latest" release.
-# Download URL (stable):
-#   https://github.com/FortifierFF/medboard-wp-jobs-widget/releases/latest/download/medboard-jobs-widget.zip
+# Build a WordPress-ready zip and publish GitHub Releases.
+# - Tag v{version} from the plugin header (used by Plugin Update Checker / WP admin updates)
+# - Also refresh the floating "latest" release for the Medboard download button
 name: Publish latest plugin zip
 
 on:
@@ -18,6 +18,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Read plugin version
+        id: ver
+        run: |
+          VERSION=$(grep -E '^ \* Version:' medboard-jobs-widget.php | head -1 | sed -E 's/.*Version:[[:space:]]*//')
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "tag=v${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Plugin version: ${VERSION}"
+
       - name: Build installable zip
         run: |
           # WP expects the zip root folder to match the plugin slug.
@@ -34,19 +42,35 @@ jobs:
           zip -r medboard-jobs-widget.zip "${STAGE}"
           ls -la medboard-jobs-widget.zip
 
-      - name: Publish / refresh latest release
+      - name: Publish versioned release (WP auto-updates)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: ${{ steps.ver.outputs.tag }}
+          body: |
+            Medboard Jobs Widget **${{ steps.ver.outputs.version }}**
+
+            WordPress sites with this plugin installed can update from **Plugins → Updates**.
+
+            Manual install: download `medboard-jobs-widget.zip` → Plugins → Add New → Upload.
+          files: build/medboard-jobs-widget.zip
+          make_latest: true
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Refresh floating latest download alias
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
           name: Latest
           body: |
-            Installable WordPress zip for **Medboard Jobs Widget**.
+            Always points at the newest installable zip (currently ${{ steps.ver.outputs.tag }}).
 
-            In WordPress: **Plugins → Add New → Upload Plugin** → choose this file → Activate.
-
-            Then open **Settings → Medboard Jobs**, paste your `mbw_…` token from Medboard → Profile → Widget, and add `[medboard_jobs]` to a page.
+            Stable URL:
+            https://github.com/FortifierFF/medboard-wp-jobs-widget/releases/latest/download/medboard-jobs-widget.zip
           files: build/medboard-jobs-widget.zip
-          make_latest: true
+          make_latest: false
           fail_on_unmatched_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

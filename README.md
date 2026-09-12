@@ -118,7 +118,16 @@ This repo is independent of `medboard-web` and `medboard-be`.
 2. Allowlist the WP host (often `localhost`) in Medboard widget settings.
 3. Use a real employer `mbw_…` token from that environment.
 
-Ship updates by releasing a new plugin zip (or git pull on the server). Hospitals do **not** need a Medboard deploy to get WP-side fixes.
+### Releases / WordPress updates
+
+Bump `Version` in `medboard-jobs-widget.php` and `Stable tag` in `readme.txt`, then push to `master`.
+
+CI publishes:
+
+- `v{version}` release + `medboard-jobs-widget.zip` (used by **Plugins → Updates**)
+- floating `latest` download for the Medboard widget page button
+
+Hospitals on **1.0.2+** get one-click updates in WP Admin. First install (or upgrade from 1.0.0/1.0.1) is still upload zip once.
 
 ## Troubleshooting
 
