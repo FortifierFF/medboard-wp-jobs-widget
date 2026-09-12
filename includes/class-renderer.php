@@ -19,33 +19,34 @@ class Medboard_Jobs_Widget_Renderer {
 		$opts = Medboard_Jobs_Widget_Settings::get_options();
 		$overrides = is_array( $overrides ) ? $overrides : array();
 
+		// shortcode_atts() always sets keys to "" when omitted — treat empty as "use settings".
 		$config = array(
-			'token'          => isset( $overrides['token'] ) && $overrides['token'] !== ''
+			'token'          => self::has_value( $overrides, 'token' )
 				? sanitize_text_field( $overrides['token'] )
 				: (string) $opts['token'],
 			'site_url'       => untrailingslashit(
-				! empty( $overrides['site_url'] )
+				self::has_value( $overrides, 'site_url' )
 					? esc_url_raw( $overrides['site_url'] )
 					: (string) $opts['site_url']
 			),
-			'embed_mode'     => ! empty( $overrides['mode'] )
+			'embed_mode'     => self::has_value( $overrides, 'mode' )
 				? sanitize_key( $overrides['mode'] )
 				: (string) $opts['embed_mode'],
-			'theme'          => ! empty( $overrides['theme'] )
+			'theme'          => self::has_value( $overrides, 'theme' )
 				? sanitize_key( $overrides['theme'] )
 				: (string) $opts['theme'],
-			'page_size'      => isset( $overrides['page_size'] )
+			'page_size'      => self::has_value( $overrides, 'page_size' )
 				? max( 1, min( 50, absint( $overrides['page_size'] ) ) )
-				: (int) $opts['page_size'],
-			'locale'         => ! empty( $overrides['locale'] )
+				: max( 1, min( 50, absint( $opts['page_size'] ) ) ),
+			'locale'         => self::has_value( $overrides, 'locale' )
 				? sanitize_key( $overrides['locale'] )
 				: (string) $opts['locale'],
-			'primary_color'  => ! empty( $overrides['primary_color'] )
+			'primary_color'  => self::has_value( $overrides, 'primary_color' )
 				? ( sanitize_hex_color( $overrides['primary_color'] ) ?: (string) $opts['primary_color'] )
 				: (string) $opts['primary_color'],
-			'height'         => isset( $overrides['height'] )
+			'height'         => self::has_value( $overrides, 'height' )
 				? max( 240, min( 2000, absint( $overrides['height'] ) ) )
-				: (int) $opts['height'],
+				: max( 240, min( 2000, absint( $opts['height'] ) ) ),
 			'show_logo'      => self::bool_attr( $overrides, 'show_logo', ! empty( $opts['show_logo'] ) ),
 			'show_salary'    => self::bool_attr( $overrides, 'show_salary', ! empty( $opts['show_salary'] ) ),
 			'show_date'      => self::bool_attr( $overrides, 'show_date', ! empty( $opts['show_date'] ) ),
@@ -67,6 +68,18 @@ class Medboard_Jobs_Widget_Renderer {
 		}
 
 		return $config;
+	}
+
+	/**
+	 * True when the shortcode/block actually provided a non-empty override.
+	 *
+	 * @param array<string, mixed> $overrides Attr bag.
+	 * @param string               $key       Attr name.
+	 */
+	private static function has_value( $overrides, $key ) {
+		return array_key_exists( $key, $overrides )
+			&& $overrides[ $key ] !== ''
+			&& $overrides[ $key ] !== null;
 	}
 
 	/**

@@ -3,7 +3,7 @@ Contributors: medboard
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,9 @@ Add the WordPress site hostname (e.g. `hospital.bg`) under Medboard → Profile 
 Yes: `[medboard_jobs theme="list" page_size="6"]` or use the block sidebar.
 
 == Changelog ==
+
+= 1.0.1 =
+* Fix: empty shortcode attrs no longer force page_size=1 and height=240 (settings were ignored).
 
 = 1.0.0 =
 * Initial shortcode + block + settings scaffold.
