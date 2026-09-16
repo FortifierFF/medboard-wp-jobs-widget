@@ -3,7 +3,7 @@ Contributors: medboard
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,9 @@ Yes: `[medboard_jobs theme="list" page_size="6"]` or use the block sidebar.
 From version 1.0.2 the plugin checks GitHub Releases and shows updates under **Plugins → Updates**. The first time you must install 1.0.2 manually (upload zip); later versions update with one click.
 
 == Changelog ==
+
+= 1.0.3 =
+* Add top-right “Powered by medboard Career Platform” badge above the job list (iframe + script).
 
 = 1.0.2 =
 * Add GitHub Releases auto-updates in the WordPress Plugins screen.

@@ -139,11 +139,53 @@ class Medboard_Jobs_Widget_Renderer {
 			return '';
 		}
 
+		// Pill styles only when the widget actually renders.
+		self::enqueue_assets();
+
 		if ( $config['embed_mode'] === 'script' ) {
 			return self::render_script( $config );
 		}
 
 		return self::render_iframe( $config );
+	}
+
+	/**
+	 * Front-end CSS for the powered-by badge (loaded once per page).
+	 */
+	private static function enqueue_assets() {
+		$handle = 'medboard-jobs-widget';
+		if ( wp_style_is( $handle, 'enqueued' ) ) {
+			return;
+		}
+		wp_enqueue_style(
+			$handle,
+			MEDBOARD_JOBS_WIDGET_URL . 'assets/widget.css',
+			array(),
+			MEDBOARD_JOBS_WIDGET_VERSION
+		);
+	}
+
+	/**
+	 * Top-right “Powered by medboard Career Platform” pill (same idea as BAPZG MedboardPoweredBy).
+	 *
+	 * @return string Safe HTML.
+	 */
+	private static function render_powered_by() {
+		$logo_url = MEDBOARD_JOBS_WIDGET_URL . 'assets/medboard-logo.svg';
+
+		return sprintf(
+			'<div class="medboard-jobs-widget__branding">'
+			. '<a class="medboard-jobs-widget__powered-by" href="%1$s" target="_blank" rel="noopener noreferrer" aria-label="%2$s">'
+			. '<span class="medboard-jobs-widget__powered-by-text">%3$s <strong>medboard</strong> %4$s</span>'
+			. '<img class="medboard-jobs-widget__powered-by-logo" src="%5$s" alt="%6$s" width="96" height="16" loading="lazy" decoding="async" />'
+			. '</a></div>',
+			esc_url( 'https://medboard.bg' ),
+			esc_attr__( 'Powered by medboard Career Platform', 'medboard-jobs-widget' ),
+			esc_html__( 'Powered by', 'medboard-jobs-widget' ),
+			esc_html__( 'Career Platform', 'medboard-jobs-widget' ),
+			esc_url( $logo_url ),
+			esc_attr__( 'medboard', 'medboard-jobs-widget' )
+		);
 	}
 
 	/**
@@ -153,8 +195,10 @@ class Medboard_Jobs_Widget_Renderer {
 		$src = self::build_embed_url( $config );
 		$height = (int) $config['height'];
 
+		// Branding above the iframe so it sits top-right of the job list.
 		return sprintf(
-			'<div class="medboard-jobs-widget medboard-jobs-widget--iframe"><iframe src="%1$s" width="100%%" height="%2$d" style="border:0;" loading="lazy" title="%3$s"></iframe></div>',
+			'<div class="medboard-jobs-widget medboard-jobs-widget--iframe">%1$s<iframe src="%2$s" width="100%%" height="%3$d" style="border:0;" loading="lazy" title="%4$s"></iframe></div>',
+			self::render_powered_by(),
 			esc_url( $src ),
 			$height,
 			esc_attr__( 'Medboard jobs', 'medboard-jobs-widget' )
@@ -195,7 +239,10 @@ class Medboard_Jobs_Widget_Renderer {
 			'data-link-target'     => '_blank',
 		);
 
-		$html = '<div class="medboard-jobs-widget medboard-jobs-widget--script"><div';
+		// Same powered-by row as iframe mode, then the jobs.js mount node.
+		$html = '<div class="medboard-jobs-widget medboard-jobs-widget--script">';
+		$html .= self::render_powered_by();
+		$html .= '<div';
 		foreach ( $attrs as $name => $value ) {
 			$html .= sprintf( ' %s="%s"', esc_attr( $name ), esc_attr( $value ) );
 		}

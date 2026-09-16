@@ -1,0 +1,82 @@
+/**
+ * Front-end styles for the Medboard Jobs Widget wrapper.
+ * Powered-by pill matches BAPZG MedboardPoweredBy (white pill + soft shadow).
+ */
+
+.medboard-jobs-widget {
+	/* Keep branding + embed stacked as one unit */
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 12px;
+}
+
+/* Top-right row above the job list / iframe */
+.medboard-jobs-widget__branding {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	width: 100%;
+}
+
+/* Pill badge — same layout as bapzg MedboardPoweredBy */
+.medboard-jobs-widget__powered-by {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 20px;
+	border-radius: 9999px;
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	background: #ffffff;
+	box-shadow: 0 2px 10px rgba(15, 17, 19, 0.08);
+	text-decoration: none;
+	color: inherit;
+	line-height: 1.2;
+	transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.medboard-jobs-widget__powered-by:hover {
+	box-shadow: 0 4px 16px rgba(15, 17, 19, 0.12);
+	border-color: rgba(0, 0, 0, 0.1);
+}
+
+.medboard-jobs-widget__powered-by:focus-visible {
+	outline: 2px solid #8b1a2b;
+	outline-offset: 2px;
+}
+
+/* “Powered by medboard Career Platform” copy */
+.medboard-jobs-widget__powered-by-text {
+	font-size: 13px;
+	color: rgba(100, 116, 139, 0.9);
+	white-space: nowrap;
+}
+
+/* Brand name inside the sentence — darker + semibold like bapzg */
+.medboard-jobs-widget__powered-by-text strong {
+	font-weight: 600;
+	color: #0f1113;
+}
+
+/* Logo mark + wordmark from assets/medboard-logo.svg */
+.medboard-jobs-widget__powered-by-logo {
+	display: block;
+	height: 16px;
+	width: auto;
+	flex-shrink: 0;
+}
+
+/* Narrow screens: allow wrap so the pill does not overflow */
+@media (max-width: 480px) {
+	.medboard-jobs-widget__powered-by {
+		gap: 8px;
+		padding: 8px 14px;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.medboard-jobs-widget__powered-by-text {
+		white-space: normal;
+		text-align: center;
+	}
+}
