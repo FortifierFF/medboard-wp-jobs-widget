@@ -3,7 +3,7 @@
  * Plugin Name:       Medboard Jobs Widget
  * Plugin URI:        https://medboard.bg
  * Description:       Embed live Medboard job listings on a WordPress site via shortcode or block. Uses the employer widget token from Medboard → Profile → Widget.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Medboard
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'MEDBOARD_JOBS_WIDGET_VERSION', '1.0.3' );
+define( 'MEDBOARD_JOBS_WIDGET_VERSION', '1.0.4' );
 define( 'MEDBOARD_JOBS_WIDGET_FILE', __FILE__ );
 define( 'MEDBOARD_JOBS_WIDGET_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MEDBOARD_JOBS_WIDGET_URL', plugin_dir_url( __FILE__ ) );

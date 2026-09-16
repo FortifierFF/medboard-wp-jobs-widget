@@ -58,11 +58,19 @@
 	color: #0f1113;
 }
 
-/* Logo mark + wordmark from assets/medboard-logo.svg */
+/*
+ * Logo mark + wordmark — same visual size as bapzg (h-4 / 16px).
+ * Themes often set img { max-width:100%; height:auto }, which blows up
+ * this wide SVG; lock both axes so that rule cannot win.
+ */
 .medboard-jobs-widget__powered-by-logo {
 	display: block;
-	height: 16px;
-	width: auto;
+	box-sizing: content-box;
+	width: 96px !important;
+	height: 16px !important;
+	max-width: 96px !important;
+	max-height: 16px !important;
+	object-fit: contain;
 	flex-shrink: 0;
 }
 
